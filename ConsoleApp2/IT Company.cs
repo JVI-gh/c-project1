@@ -28,23 +28,23 @@ class ITCompany
     static void Main(String[] args)
     {
 
-        string fileName = "test1.json";
+        string fileName = "data.json";
         string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        string sFile = System.IO.Path.Combine(sCurrentDirectory, @"..\..\..\bin\Debug\net6.0\" + fileName);
+        string sFile = System.IO.Path.Combine(sCurrentDirectory, @"..\..\..\" + fileName);
         string sFilePath = Path.GetFullPath(sFile);
 
         if (!File.Exists(sFilePath))
         {
-            createFile(fileName);
+            createFile(sFilePath);
         }
-        readFile(fileName);
-        updateFile(fileName);
+        readFile(sFilePath);
+        updateFile(sFilePath);
         printCompanyData(companyData.ToString());
 
     }
 
 
-    public static void createFile(string fileName)
+    public static void createFile(string filePath)
     {
         ProjectTeam[] teams = ProjectTeam.CreateBaseTeams();
 
@@ -52,12 +52,12 @@ class ITCompany
 
         string jsonString = JsonSerializer.Serialize(teams, options);
 
-        File.WriteAllText(fileName, jsonString);
+        File.WriteAllText(filePath, jsonString);
 
     }
-    public static void readFile(string fileName)
+    public static void readFile(string filePath)
     {
-        string jsonString = File.ReadAllText(fileName);
+        string jsonString = File.ReadAllText(filePath);
         ProjectTeam[] teams = JsonSerializer.Deserialize<ProjectTeam[]>(jsonString)!;
 
         int numberOfTeams = teams.Length;
@@ -108,7 +108,7 @@ class ITCompany
 
     }
 
-    public static void updateFile(string fileName)
+    public static void updateFile(string filePath)
     {
 
         foreach (var team in companyData.teams)
@@ -124,7 +124,7 @@ class ITCompany
 
         string jsonString = JsonSerializer.Serialize(companyData.teams, options);
 
-        File.WriteAllText(fileName, jsonString);
+        File.WriteAllText(filePath, jsonString);
     }
 
     public static void printCompanyData(string companyDataText)
